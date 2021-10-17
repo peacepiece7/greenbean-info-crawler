@@ -3,9 +3,8 @@ import fs from "fs";
 import parse from "csv-parse/lib/sync";
 import stringify from "csv-stringify/lib/sync";
 
-// Create siteName_location.csv
-export const gscCralwer = async (siteName) => {
-  // default_location file에 ${sileNmae}_location.csv 파일을 만들고, 기본 주소를 입력해주세요!
+export const almacieloCrawler = async (siteName) => {
+  // default_location file에 ${sileNmae}_location.csv 파일을 만들고, 그 안에 parsing할 URL을 입력해주세요!
   fs.readFile(`coffee_assets/tmp/parse_location/${siteName}_location.csv`, (err) => {
     if (err) {
       fs.writeFileSync(`coffee_assets/tmp/parse_location/${siteName}_parse_location.csv`, "");
@@ -37,9 +36,10 @@ export const gscCralwer = async (siteName) => {
       let check = true;
       do {
         await page.waitForSelector("body");
-        await page.waitForTimeout(1000);
+        await page.waitForTimeout(500);
         check = await page.evaluate(() => {
-          const contEl = document.querySelectorAll(".item_cont .item_photo_box");
+          // ** 이 코드는 사이트마다 계속해서 변경해 줘야 합니다! **
+          const contEl = document.querySelectorAll(".box .img .prdimg");
           if (contEl.length) {
             return true;
           } else {
@@ -49,6 +49,7 @@ export const gscCralwer = async (siteName) => {
 
         pageIdx++;
         // 이 부분은 regex로 변경해야 crawler("site name")로 모든 사이트 동작 가능
+        // ** 이 코드는 사이트마다 계속해서 변경해 줘야 합나디! **
         const pageLocation = r[1].replace("php?", `php?page=${pageIdx}&`);
         await page.goto(pageLocation);
         check && newUrlList.push([siteName, pageLocation]);
@@ -60,7 +61,7 @@ export const gscCralwer = async (siteName) => {
       newUrlList.push(val);
     });
 
-    // newUrlList를 siteName_parse_location.csv에 저장
+    // newUrlList를 ${siteName}_parse_location.csv에 저장
     let csvFormatData = stringify(newUrlList);
     fs.writeFileSync(`coffee_assets/tmp/parse_location/${siteName}_parse_location.csv`, csvFormatData);
 
@@ -76,23 +77,21 @@ export const gscCralwer = async (siteName) => {
         const tagParsingResult = [];
         //? if sold out
         // const soldOutEl = document.querySelectorAll(".item_photo_box .item_soldout_bg")
-        const titles = Array.from(document.querySelectorAll(".item_tit_box .item_name")).map((element) => {
+
+        // *** 이 코드는 사이트마다 계속해서 변경해 줘야 합니다! ***
+        const titles = Array.from(document.querySelectorAll(".info .name a")).map((element) => {
           return element.textContent;
         });
-
         const countries = titles.map((val) => {
-          const country = val.replace(/].+/, "").split("[").join("");
-          return country;
+          const str = val.replace(/^\[.*\]/g, "");
+          return str.split(" ")[0];
         });
-
-        const directUrl = Array.from(document.querySelectorAll(".item_cont .item_photo_box a")).map((value) => value.href);
-
-        // parse price
-        const prices = Array.from(document.querySelectorAll(".item_money_box .item_price span")).map((element) => {
-          return element.textContent;
+        const directUrl = Array.from(document.querySelectorAll(".box .img .prdimg a")).map((value) => value.href);
+        const prices = Array.from(document.querySelectorAll(".info .price .sell")).map((element) => {
+          return element.textContent.replace(",", "").trim();
         });
         for (let i = 0; i < titles.length; i++) {
-          tagParsingResult.push([titles[i], countries[i], prices[i].replace(",", "").trim(), directUrl[i]]);
+          tagParsingResult.push([titles[i], countries[i], prices[i], directUrl[i]]);
         }
         return tagParsingResult;
       });
@@ -100,6 +99,7 @@ export const gscCralwer = async (siteName) => {
         evaluateResult.map((value) => {
           parsingResult.push(value);
         });
+      console.log(parsingResult);
     }
     csvFormatData = stringify(parsingResult);
     fs.writeFileSync(`coffee_assets/tmp/parse_result/${siteName}_parse_result.csv`, csvFormatData);
@@ -111,11 +111,6 @@ export const gscCralwer = async (siteName) => {
   }
 };
 
-gscCralwer("gsc");
+almacieloCrawler("almacielo");
 
-// SOCKS5 = Deep web browser header
-// HIA = High Annonimity
-// NOA = Not of Annonimity
-
-// https://spys.one/en/free-proxy-list/
-// postman으로 보냈을 떄, 페이지 정보가 잘 나오면 크롤링하기 쉬운 사이트
+//Error: Evaluation failed: ReferenceError: _toConsumableArray is not defined
