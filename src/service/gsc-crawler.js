@@ -2,6 +2,9 @@ import puppeteer from "puppeteer";
 import fs from "fs";
 import parse from "csv-parse/lib/sync";
 import stringify from "csv-stringify/lib/sync";
+import CoffeeUploader from "../firebase/firebase-uploader.js";
+
+const uploader = new CoffeeUploader();
 
 // Create siteName_location.csv
 export const gscCralwer = async (siteName) => {
@@ -72,7 +75,7 @@ export const gscCralwer = async (siteName) => {
 
     for (const [i, r] of Object.entries(records)) {
       await page.goto(r[1]);
-      const evaluateResult = await page.evaluate(() => {
+      const evaluateResult = await page.evaluate((siteName) => {
         const tagParsingResult = [];
         //? if sold out
         // const soldOutEl = document.querySelectorAll(".item_photo_box .item_soldout_bg")
@@ -92,10 +95,10 @@ export const gscCralwer = async (siteName) => {
           return element.textContent;
         });
         for (let i = 0; i < titles.length; i++) {
-          tagParsingResult.push([titles[i], countries[i], prices[i].replace(",", "").trim(), directUrl[i]]);
+          tagParsingResult.push([titles[i].trim(), prices[i].replace(",", "").trim(), countries[i].trim(), siteName, directUrl[i].trim()]);
         }
         return tagParsingResult;
-      });
+      }, siteName);
       evaluateResult[0] &&
         evaluateResult.map((value) => {
           parsingResult.push(value);
@@ -104,6 +107,13 @@ export const gscCralwer = async (siteName) => {
     csvFormatData = stringify(parsingResult);
     fs.writeFileSync(`coffee_assets/tmp/parse_result/${siteName}_parse_result.csv`, csvFormatData);
 
+    // Upload coffee data
+    parsingResult.map((val) => {
+      setTimeout(() => {
+        console.log("각각의 입력 값", val);
+        uploader.createCoffeeData(val);
+      }, 500);
+    });
     await page.close();
     await browser.close();
   } catch (err) {
