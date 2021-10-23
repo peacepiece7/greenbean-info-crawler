@@ -4,6 +4,12 @@
 
 [카페 하나린](https://m.blog.naver.com/PostView.naver?blogId=bong24h&logNo=221441803599&referrerCode=0&searchKeyword=%EC%82%AC%EC%9D%B4%ED%8A%B8)
 
+# crawler 만든 사이트 
+
+[gsc](https://www.gsc.coffee/)
+
+[almacielo](https://www.almacielo.com/)
+
 
 # 간단한 사이트
 [커피 스펠](https://smartstore.naver.com/coffeespell/category/661f22e827554c198b452d437c66dc5e?cp=1)
@@ -22,9 +28,9 @@
 - 아주 가끔 영어로 나라이름이 적혀 있음 
 - 타이틀이 영어암
 
-[gsc](https://www.gsc.coffee/)
 
-- ok 
+
+
 
 [micoffee](https://www.micoffee.co.kr/)
 
@@ -43,8 +49,6 @@
 
 [royalcoffee](http://royalcoffeekorea.co.kr/sub/greenbean2.htm?catcode=100000)
 
-[almacielo](https://www.almacielo.com/)
-- okay
 
 [cabrocia](https://cabrosia.com/)
 - 브라질 이파네마 , 아시아&아프리카, 중남미 세 가지 라우터만 크롤링 하면 될 듯

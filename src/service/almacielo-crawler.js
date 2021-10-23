@@ -68,7 +68,7 @@ export const almacieloCrawler = async (siteName) => {
     let csvFormatData = stringify(newUrlList);
     fs.writeFileSync(`coffee_assets/tmp/parse_location/${siteName}_parse_location.csv`, csvFormatData);
 
-    // 모든 사이트 돌아다니면서 파싱 시작
+    // * 모든 사이트 돌아다니면서 파싱 시작
     input = fs.readFileSync(`coffee_assets/tmp/parse_location/${siteName}_parse_location.csv`).toString("utf-8");
     records = parse(input);
     page = await browser.newPage();
@@ -87,7 +87,12 @@ export const almacieloCrawler = async (siteName) => {
         });
         const countries = titles.map((val) => {
           const str = val.replace(/^\[.*\]/g, "");
-          return str.split(" ")[0];
+          const country = str.split(" ")[0];
+          if (country === "엘") {
+            return "엘살바도르";
+          } else {
+            return country;
+          }
         });
         const directUrl = Array.from(document.querySelectorAll(".box .img .prdimg a")).map((value) => value.href);
         const prices = Array.from(document.querySelectorAll(".info .price .sell")).map((element) => {
@@ -98,6 +103,8 @@ export const almacieloCrawler = async (siteName) => {
         }
         return tagParsingResult;
       }, siteName);
+
+      // Save data
       evaluateResult[0] &&
         evaluateResult.map((value) => {
           parsingResult.push(value);
@@ -106,12 +113,9 @@ export const almacieloCrawler = async (siteName) => {
     csvFormatData = stringify(parsingResult);
     fs.writeFileSync(`coffee_assets/tmp/parse_result/${siteName}_parse_result.csv`, csvFormatData);
 
-    // Upload coffee data
+    // Upload data
     parsingResult.map((val) => {
-      setTimeout(() => {
-        console.log("각각의 입력 값", val);
-        uploader.createCoffeeData(val);
-      }, 500);
+      uploader.createCoffeeData(val);
     });
 
     await page.close();
@@ -121,6 +125,6 @@ export const almacieloCrawler = async (siteName) => {
   }
 };
 
-almacieloCrawler("almacielo");
+almacieloCrawler("ALMACIELO");
 
 //Error: Evaluation failed: ReferenceError: _toConsumableArray is not defined

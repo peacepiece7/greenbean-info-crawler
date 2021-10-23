@@ -85,7 +85,11 @@ export const gscCralwer = async (siteName) => {
 
         const countries = titles.map((val) => {
           const country = val.replace(/].+/, "").split("[").join("");
-          return country;
+          if (country === "파푸아 뉴기니") {
+            return "파푸아뉴기니";
+          } else {
+            return country;
+          }
         });
 
         const directUrl = Array.from(document.querySelectorAll(".item_cont .item_photo_box a")).map((value) => value.href);
@@ -121,7 +125,7 @@ export const gscCralwer = async (siteName) => {
   }
 };
 
-gscCralwer("gsc");
+gscCralwer("GSC");
 
 // SOCKS5 = Deep web browser header
 // HIA = High Annonimity
