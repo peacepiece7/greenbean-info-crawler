@@ -7,7 +7,7 @@ import CoffeeUploader from "../firebase/firebase-uploader.js";
 const uploader = new CoffeeUploader();
 
 // Create siteName_location.csv
-const royalCrawler = async (siteName, parsingStart) => {
+const miCrawler = async (siteName, parsingStart) => {
   // default_location file에 ${sileNmae}_location.csv 파일을 만들고, 기본 주소를 입력해주세요!
   fs.readFile(`coffee_assets/tmp/parse_location/${siteName}_location.csv`, (err) => {
     if (err) {
@@ -32,30 +32,35 @@ const royalCrawler = async (siteName, parsingStart) => {
       height: 1280,
     });
 
-    let input = fs.readFileSync(`coffee_assets/tmp/default_location/${siteName}_location.csv`).toString("utf-8");
-    let records = parse(input);
+    const input = fs.readFileSync(`coffee_assets/tmp/default_location/${siteName}_location.csv`).toString("utf-8");
+    const records = parse(input);
+    const newRecords = [];
 
-    await page.goto(records[0][1]);
-    await page.waitForTimeout(5000);
-    let counter = 2;
-    let check = true;
+    for (let i = 0; i < records.length; i++) {
+      let counter = 1;
+      let itemIsExist = true;
 
-    while (check) {
-      const currentUrl = records[0][1].replace("?", `?page=${counter}`);
-      await page.goto(currentUrl);
-      await page.waitForTimeout(1000);
-      const pageIndex = await page.evaluate(() => {
-        return document.querySelector("td[align=center] td[align=center] td[align=center] b").textContent;
-      });
-      if (pageIndex == 1) {
-        check = false;
-      } else {
-        counter++;
-        records.push([siteName, currentUrl]);
+      while (itemIsExist) {
+        const currentUrl = records[i][1].replace("?", `?page=${counter}&`);
+        await page.goto(currentUrl);
+        await page.waitForSelector("body");
+        await page.waitForTimeout(2000);
+
+        const pageCheck = await page.evaluate(() => {
+          const itemTit = document.querySelector(".item_tit_box .item_name");
+          return itemTit ? true : false;
+        });
+
+        if (pageCheck) {
+          counter++;
+          newRecords.push([siteName, currentUrl]);
+        } else {
+          itemIsExist = false;
+        }
       }
     }
-
-    let str = stringify(records);
+    console.log(newRecords);
+    const str = stringify(newRecords);
     fs.writeFileSync(`coffee_assets/tmp/parse_location/${siteName}_parse_location.csv`, str);
     await page.close();
     await browser.close();
@@ -79,30 +84,24 @@ const parser = async (siteName) => {
 
     const input = fs.readFileSync(`coffee_assets/tmp/parse_location/${siteName}_parse_location.csv`).toString("utf-8");
     const records = parse(input);
-    // 데이터가 없을 떄 까지 각 페이지를 반복
-    // 한 페이지 안의 모든 데이터를 evaluate, 이를 페이지 데이터라 함
-    // 페이지 데이터를 모두 모아서 db에 업로드
 
     const parsingResult = [];
     for (let i = 0; i < records.length; i++) {
       await page.goto(records[i][1]);
-      await page.waitForSelector("#prd_gallery");
+      await page.waitForSelector(".item_tit_box .item_name");
       await page.waitForTimeout(1000);
 
       const evaluateResult = await page.evaluate(() => {
         const snippet = [];
-        Array.from(document.querySelectorAll("ul#prd_gallery li")).map((val) => {
-          let title = val.children[0].textContent.replace(/[^ㄱ-힣]+/, "").split("\n")[0];
-          let price = val.textContent.match(/[0-9]+.[0-9]+원/g);
-          if (price) {
-            price = price[0].split(",").join("");
-          }
-          let country = title.split(" ")[0];
-          if (country === "에디오피아") {
-            country = "에티오피아";
-          }
-          const directUrl = val.parentNode.href;
-          snippet.push([title.trim(), price ? price : "0원", country, "Royal Coffee", directUrl]);
+        Array.from(document.querySelectorAll(".item_info_cont")).map((val) => {
+          const title = val
+            .querySelector(".item_name")
+            .textContent.replace(/^\[.+\]/g, "")
+            .trim();
+          const price = val.querySelector(".item_price span").textContent.split(",").join("").trim();
+          const country = title.split(" ")[0].trim();
+          const directUrl = val.querySelector(".item_tit_box a").href;
+          snippet.push([title, price, country, "MI Coffee", directUrl]);
         });
         return snippet;
       });
@@ -110,12 +109,12 @@ const parser = async (siteName) => {
         parsingResult.push(value);
       });
     }
-    console.log(parsingResult);
+
     const str = stringify(parsingResult);
     fs.writeFileSync(`coffee_assets/tmp/parse_result/${siteName}_parse_result.csv`, str);
 
     // Upload coffee data
-    parsingResult.map((val, idx) => {
+    parsingResult.map((val) => {
       uploader.createCoffeeData(val);
     });
   } catch (e) {
@@ -123,4 +122,4 @@ const parser = async (siteName) => {
   }
 };
 
-royalCrawler("royalcoffee", parser);
+miCrawler("micoffee", parser);

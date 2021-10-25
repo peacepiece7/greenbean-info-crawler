@@ -76,7 +76,7 @@ export const almacieloCrawler = async (siteName) => {
 
     for (const [i, r] of Object.entries(records)) {
       await page.goto(r[1]);
-      const evaluateResult = await page.evaluate((siteName) => {
+      const evaluateResult = await page.evaluate(() => {
         const tagParsingResult = [];
         //? if sold out
         // const soldOutEl = document.querySelectorAll(".item_photo_box .item_soldout_bg")
@@ -99,10 +99,10 @@ export const almacieloCrawler = async (siteName) => {
           return element.textContent.replace(",", "").trim();
         });
         for (let i = 0; i < titles.length; i++) {
-          tagParsingResult.push([titles[i].trim(), prices[i].trim(), countries[i].trim(), siteName, directUrl[i].trim()]);
+          tagParsingResult.push([titles[i].trim(), prices[i].trim(), countries[i].trim(), "ALMACIELO", directUrl[i].trim()]);
         }
         return tagParsingResult;
-      }, siteName);
+      });
 
       // Save data
       evaluateResult[0] &&
@@ -125,6 +125,6 @@ export const almacieloCrawler = async (siteName) => {
   }
 };
 
-almacieloCrawler("ALMACIELO");
+almacieloCrawler("almacielo");
 
 //Error: Evaluation failed: ReferenceError: _toConsumableArray is not defined

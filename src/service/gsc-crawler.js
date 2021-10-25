@@ -75,7 +75,7 @@ export const gscCralwer = async (siteName) => {
 
     for (const [i, r] of Object.entries(records)) {
       await page.goto(r[1]);
-      const evaluateResult = await page.evaluate((siteName) => {
+      const evaluateResult = await page.evaluate(() => {
         const tagParsingResult = [];
         //? if sold out
         // const soldOutEl = document.querySelectorAll(".item_photo_box .item_soldout_bg")
@@ -99,10 +99,10 @@ export const gscCralwer = async (siteName) => {
           return element.textContent;
         });
         for (let i = 0; i < titles.length; i++) {
-          tagParsingResult.push([titles[i].trim(), prices[i].replace(",", "").trim(), countries[i].trim(), siteName, directUrl[i].trim()]);
+          tagParsingResult.push([titles[i].trim(), prices[i].replace(",", "").trim(), countries[i].trim(), "GSC", directUrl[i].trim()]);
         }
         return tagParsingResult;
-      }, siteName);
+      });
       evaluateResult[0] &&
         evaluateResult.map((value) => {
           parsingResult.push(value);
@@ -125,7 +125,7 @@ export const gscCralwer = async (siteName) => {
   }
 };
 
-gscCralwer("GSC");
+gscCralwer("gsc");
 
 // SOCKS5 = Deep web browser header
 // HIA = High Annonimity
