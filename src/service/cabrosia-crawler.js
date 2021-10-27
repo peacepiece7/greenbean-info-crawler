@@ -70,20 +70,40 @@ const parser = async (siteName) => {
     const parsingResult = [];
     for (let i = 0; i < records.length; i++) {
       await page.goto(records[i][1]);
-      await page.waitForSelector(".fr-dib");
+      await page.waitForSelector("body");
       await page.waitForTimeout(1000);
 
       // prettier-ignore
       const title = await page.$eval(".view_tit", (el) => el.textContent.trim().replace(/^\(.+\)/g, ""))
-      console.log(title);
+      const price = await page.evaluate(() => {
+        const prices = Array.from(document.querySelectorAll(".dropdown-item")).map((val, idx) => {
+          if (idx === 1) {
+            const text = val.textContent.match(/[0-9]+\,[0-9]+원/);
+            return text && text;
+          } else {
+            return null;
+          }
+        });
+        let price;
+        prices.forEach((val) => {
+          if (val) {
+            price = val[0];
+          }
+        });
+        return price ? price : "Promotion item";
+      });
 
-      // await page.click(".dropdown-toggle"); 이거 작동 안 함..
-      await page.waitForTimeout(10000);
+      const directUrl = await page.evaluate(() => {
+        return document.location.href;
+      });
 
-      // snippet.push([title, price, country, "CABROSIA", directUrl]);
+      await page.waitForTimeout(1000);
+      const country = title.split(" ")[0];
+      console.log([title.trim(), price.trim(), country, "CABROSIA", directUrl]);
+      parsingResult.push([title.trim(), price.trim(), country, "CABROSIA", directUrl]);
     }
-    // const str = stringify(parsingResult);
-    // fs.writeFileSync(`coffee_assets/tmp/parse_result/${siteName}_parse_result.csv`, str);
+    const str = stringify(parsingResult);
+    fs.writeFileSync(`coffee_assets/tmp/parse_result/${siteName}_parse_result.csv`, str);
 
     // Upload coffee data
     // parsingResult.map((val) => {
