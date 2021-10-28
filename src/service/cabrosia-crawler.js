@@ -21,7 +21,7 @@ const cabrosiaCrawler = async (siteName, parsingStart) => {
   const input = readFileSync(`coffee_assets/tmp/default_location/${siteName}_location.csv`).toString("utf-8");
   const records = parse(input);
   try {
-    const browser = await puppeteer.launch({ headless: false, args: ["--window-size:1400,1400"] });
+    const browser = await puppeteer.launch({ headless: true, args: ["--window-size:1400,1400"] });
     await browser.userAgent(
       "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.54 Safari/537.36",
     );
@@ -54,7 +54,7 @@ const cabrosiaCrawler = async (siteName, parsingStart) => {
 
 const parser = async (siteName) => {
   try {
-    const browser = await puppeteer.launch({ headless: false, args: ["--window-size:1400,1400"] });
+    const browser = await puppeteer.launch({ headless: true, args: ["--window-size:1400,1400"] });
     await browser.userAgent(
       "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.54 Safari/537.36",
     );
@@ -74,11 +74,14 @@ const parser = async (siteName) => {
       await page.waitForTimeout(1000);
 
       // prettier-ignore
-      const title = await page.$eval(".view_tit", (el) => el.textContent.trim().replace(/^\(.+\)/g, ""))
+      const title = await page.$eval(".view_tit", (el) => {
+        return el.textContent.replace(/\*?^\(.{1,6}\)/g, "").split("\t")[0].trim()
+      })
       const price = await page.evaluate(() => {
         const prices = Array.from(document.querySelectorAll(".dropdown-item")).map((val, idx) => {
           if (idx === 1) {
             const text = val.textContent.match(/[0-9]+\,[0-9]+원/);
+
             return text && text;
           } else {
             return null;
@@ -90,7 +93,13 @@ const parser = async (siteName) => {
             price = val[0];
           }
         });
-        return price ? price : "Promotion item";
+        if (price) {
+          price = price.split(",").join("").trim();
+          return price;
+        } else {
+          price = "Promotion item";
+        }
+        return price;
       });
 
       const directUrl = await page.evaluate(() => {
@@ -99,16 +108,16 @@ const parser = async (siteName) => {
 
       await page.waitForTimeout(1000);
       const country = title.split(" ")[0];
-      console.log([title.trim(), price.trim(), country, "CABROSIA", directUrl]);
-      parsingResult.push([title.trim(), price.trim(), country, "CABROSIA", directUrl]);
+      console.log([title.trim(), price, country, "CABROSIA", directUrl]);
+      parsingResult.push([title.trim(), price, country, "CABROSIA", directUrl]);
     }
     const str = stringify(parsingResult);
     fs.writeFileSync(`coffee_assets/tmp/parse_result/${siteName}_parse_result.csv`, str);
 
     // Upload coffee data
-    // parsingResult.map((val) => {
-    //   uploader.createCoffeeData(val);
-    // });
+    parsingResult.map((val) => {
+      uploader.createCoffeeData(val);
+    });
     await page.close();
     await browser.close();
   } catch (e) {

@@ -8,7 +8,8 @@
     "dev:almacielo": "babel-node src/service/almacielo-crawler.js",
     "dev:royal": "babel-node src/service/royal-crawler.js",
     "dev:mi" : "babel-node src/service/mi-crawler.js",
-    "dev:cabrosia" : "babel-node src/service/cabrosia-crawler.js"
+    "dev:cabrosia" : "babel-node src/service/cabrosia-crawler.js",
+    "dev:rehm" : "babel-node src/service/rehm-crawler.js"
   },
   "author": "",
   "license": "ISC",
