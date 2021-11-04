@@ -8,7 +8,7 @@ import CoffeeUploader from "../firebase/firebase-uploader.js";
 
 const uploader = new CoffeeUploader();
 
-const rehmCrawler = async (siteName, parsingStart) => {
+const coffeePlantCrawler = async (siteName, parsingStart) => {
   fs.readFile(`coffee_assets/tmp/parse_location/${siteName}_parse_location.csv`, (err) => {
     if (err) {
       fs.writeFileSync(`coffee_assets/tmp/parse_location/${siteName}_parse_location.csv`, "");
@@ -33,12 +33,14 @@ const rehmCrawler = async (siteName, parsingStart) => {
       let index = 1;
       let isExist = true;
       while (isExist) {
-        const url = records[i][1].replace(/\?/g, `?page=${index}&`);
+        const url = records[i][1].replace(/\?/g, `?page=${index}`);
         await page.goto(url);
         await page.waitForSelector("body");
         await page.waitForTimeout(1000);
         const link = await page.evaluate(() => {
-          if (document.querySelector("ul.prdList.column4 > li")) {
+          const table = document.querySelectorAll("table table table table")[4];
+          const isExist = table.querySelector("img");
+          if (isExist) {
             return window.location.href;
           } else {
             return null;
@@ -62,7 +64,7 @@ const rehmCrawler = async (siteName, parsingStart) => {
     const str = stringify(parseResult);
     fs.writeFileSync(`coffee_assets/tmp/parse_location/${siteName}_parse_location.csv`, str);
 
-    parsingStart(siteName);
+    // parsingStart(siteName);
   } catch (err) {
     console.log(err);
   }
@@ -140,8 +142,8 @@ const parser = async (siteName) => {
     console.log(e);
   }
 };
-// rehmCrawler("rehm");
+coffeePlantCrawler("coffee_plant");
 
-// rehmCrawler("rehm", parser);
+// coffeePlantCrawler("rehm", parser);
 
-parser("rehm");
+// parser("coffee_plant");

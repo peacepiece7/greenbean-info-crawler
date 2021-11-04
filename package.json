@@ -9,7 +9,8 @@
     "dev:royal": "babel-node src/service/royal-crawler.js",
     "dev:mi" : "babel-node src/service/mi-crawler.js",
     "dev:cabrosia" : "babel-node src/service/cabrosia-crawler.js",
-    "dev:rehm" : "babel-node src/service/rehm-crawler.js"
+    "dev:rehm" : "babel-node src/service/rehm-crawler.js",
+    "dev:plant" : "babel-node src/service/coffee-plant-crawler.js"
   },
   "author": "",
   "license": "ISC",

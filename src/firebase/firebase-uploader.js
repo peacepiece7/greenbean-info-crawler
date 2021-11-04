@@ -44,10 +44,7 @@ class CoffeeUploader {
     }
   }
 
-  // !!! 여기 아래는 수정하지 않음 !!!!!!
-  // !!! 여기 아래는 수정하지 않음 !!!!!!
-  // !!! 여기 아래는 수정하지 않음 !!!!!!
-  // !!! 여기 아래는 수정하지 않음 !!!!!!
+  // ! 수정이 필요함 !
   // * Additional Route ( provider, country, title )
   setProviderData(coffeeData) {
     const providerRef = `provider/${coffeeData.provider}/${coffeeData.id}`;
