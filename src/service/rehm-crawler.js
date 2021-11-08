@@ -23,7 +23,7 @@ const rehmCrawler = async (siteName, parsingStart) => {
   const input = readFileSync(`coffee_assets/tmp/default_location/${siteName}_location.csv`).toString("utf-8");
   const records = parse(input);
   try {
-    const browser = await puppeteer.launch({ headless: true, args: ["--window-size:1400,1400"] });
+    const browser = await puppeteer.launch({ headless: false, args: ["--window-size:1400,1400"] });
     await browser.userAgent(
       "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.54 Safari/537.36",
     );
@@ -71,7 +71,7 @@ const rehmCrawler = async (siteName, parsingStart) => {
 const parser = async (siteName) => {
   console.log("Data parser start");
   try {
-    const browser = await puppeteer.launch({ headless: true, args: ["--window-size:1400,1400"] });
+    const browser = await puppeteer.launch({ headless: false, args: ["--window-size:1400,1400"] });
     await browser.userAgent(
       "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.54 Safari/537.36",
     );
@@ -134,6 +134,7 @@ const parser = async (siteName) => {
       uploader.createCoffeeData(val);
     });
 
+    console.log("Data parsing is done");
     await page.close();
     await browser.close();
   } catch (e) {
@@ -142,6 +143,4 @@ const parser = async (siteName) => {
 };
 // rehmCrawler("rehm");
 
-// rehmCrawler("rehm", parser);
-
-parser("rehm");
+rehmCrawler("rehm", parser);
