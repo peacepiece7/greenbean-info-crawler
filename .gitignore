@@ -7,3 +7,6 @@ dist/
 build/
 
 .env
+
+assets/
+node_modules

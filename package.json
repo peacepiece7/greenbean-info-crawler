@@ -7,10 +7,10 @@
     "dev:gsc": "babel-node src/service/gsc-crawler.js",
     "dev:almacielo": "babel-node src/service/almacielo-crawler.js",
     "dev:royal": "babel-node src/service/royal-crawler.js",
-    "dev:mi" : "babel-node src/service/mi-crawler.js",
-    "dev:cabrosia" : "babel-node src/service/cabrosia-crawler.js",
-    "dev:rehm" : "babel-node src/service/rehm-crawler.js",
-    "dev:plant" : "babel-node src/service/coffee-plant-crawler.js"
+    "dev:mi": "babel-node src/service/mi-crawler.js",
+    "dev:cabrosia": "babel-node src/service/cabrosia-crawler.js",
+    "dev:rehm": "babel-node src/service/rehm-crawler.js",
+    "dev:plant": "babel-node src/service/coffee-plant-crawler.js"
   },
   "author": "",
   "license": "ISC",
@@ -19,19 +19,13 @@
     "csv-parse": "^4.16.3",
     "csv-stringify": "^5.6.5",
     "dotenv": "^10.0.0",
-    "express": "^4.17.1",
-    "firebase": "^9.1.3",
+    "express": "^4.17.3",
     "lodash": "^4.17.21",
-    "puppeteer": "^10.4.0",
-    "webpack": "^5.58.2",
-    "webpack-cli": "^4.9.0"
+    "mysql2": "^2.3.3",
+    "pm2": "^5.2.0",
+    "puppeteer": "^10.4.0"
   },
   "devDependencies": {
-    "@babel/cli": "^7.15.7",
-    "@babel/core": "^7.15.8",
-    "@babel/node": "^7.15.8",
-    "@babel/preset-env": "^7.15.8",
-    "babel-loader": "^8.2.2",
-    "nodemon": "^2.0.13"
+    "nodemon": "^2.0.15"
   }
 }

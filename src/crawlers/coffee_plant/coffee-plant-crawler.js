@@ -4,7 +4,7 @@ import puppeteer from "puppeteer";
 import fs, { readFileSync } from "fs";
 import parse from "csv-parse/lib/sync";
 import stringify from "csv-stringify/lib/sync";
-import CoffeeUploader from "../firebase/firebase-uploader.js";
+import CoffeeUploader from "../../firebase/firebase-uploader.js";
 
 const uploader = new CoffeeUploader();
 
@@ -25,7 +25,7 @@ const coffeePlantCrawler = async (siteName, parsingStart) => {
   try {
     const browser = await puppeteer.launch({ headless: true, args: ["--window-size:1400,1400"] });
     await browser.userAgent(
-      "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.54 Safari/537.36",
+      "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.54 Safari/537.36"
     );
     const parseResult = [];
     const page = await browser.newPage();
@@ -75,7 +75,7 @@ const parser = async (siteName) => {
   try {
     const browser = await puppeteer.launch({ headless: true, args: ["--window-size:1400,1400"] });
     await browser.userAgent(
-      "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.54 Safari/537.36",
+      "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.54 Safari/537.36"
     );
     const page = await browser.newPage();
     await page.setViewport({
