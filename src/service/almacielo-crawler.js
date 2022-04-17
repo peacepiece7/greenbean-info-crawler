@@ -1,5 +1,6 @@
 import puppeteer from "puppeteer";
 import fs from "fs";
+import path from "node:path";
 import parse from "csv-parse/lib/sync";
 import stringify from "csv-stringify/lib/sync";
 import CoffeeUploader from "../firebase/firebase-uploader.js";
@@ -7,6 +8,7 @@ import CoffeeUploader from "../firebase/firebase-uploader.js";
 const uploader = new CoffeeUploader();
 
 export const almacieloCrawler = async (siteName) => {
+  const basePath = path.join(__dirname, "coffee_assets", "tmp", "parse_location", "");
   // default_location file에 ${sileNmae}_location.csv 파일을 만들고, 그 안에 parsing할 URL을 입력해주세요!
   fs.readFile(`coffee_assets/tmp/parse_location/${siteName}_location.csv`, (err) => {
     if (err) {
@@ -29,7 +31,7 @@ export const almacieloCrawler = async (siteName) => {
       defaultViewport: { width: 900, height: 1080 },
     });
     await browser.userAgent(
-      "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.71 Safari/537.36",
+      "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.71 Safari/537.36"
     );
     const newUrlList = [];
     let page = await browser.newPage();
@@ -99,7 +101,13 @@ export const almacieloCrawler = async (siteName) => {
           return element.textContent.replace(",", "").trim();
         });
         for (let i = 0; i < titles.length; i++) {
-          tagParsingResult.push([titles[i].trim(), prices[i].trim(), countries[i].trim(), "ALMACIELO", directUrl[i].trim()]);
+          tagParsingResult.push([
+            titles[i].trim(),
+            prices[i].trim(),
+            countries[i].trim(),
+            "ALMACIELO",
+            directUrl[i].trim(),
+          ]);
         }
         return tagParsingResult;
       });
@@ -125,6 +133,6 @@ export const almacieloCrawler = async (siteName) => {
   }
 };
 
-almacieloCrawler("almacielo");
+almacieloCrawler();
 
 //Error: Evaluation failed: ReferenceError: _toConsumableArray is not defined
