@@ -4,7 +4,7 @@ const path = require("path");
 const parse = require("csv-parse/lib/sync");
 const stringify = require("csv-stringify/lib/sync");
 
-const parsePageURL = async () => {
+const parseAlmacieloPageURL = async () => {
   const basePath = path.join(__dirname, "..", "..", "..", "assets", "almacielo");
   // default_location file에 ${sileNmae}_location.csv 파일을 만들고, 그 안에 parsing할 URL을 입력해주세요!
   fs.readFile(`${basePath}/almacielo_location.csv`, (err) => {
@@ -80,6 +80,6 @@ const parsePageURL = async () => {
   }
 };
 
-parsePageURL();
+parseAlmacieloPageURL();
 
-module.exports = parsePageURL;
+module.exports = parseAlmacieloPageURL;

@@ -16,23 +16,26 @@ const promisePool = coffeePool.promise();
 
 const sql = {
   insertCoffeeData: async (v) => {
+    // title: title.trim(),
+    // price,
+    // country,
+    // provider: "cabrosia",
+    // directURL,
     try {
       let result;
-      if (!v.description) {
-        result = await promisePool.query(
-          `
-          insert into collections (title, provider, country, price, variety, processing, direct_url, sold_out)
-          values('${v.title}', '${v.provider}', '${v.country}', ${v.price}, '${v.variety}', '${v.processing}', '${v.directURL}', ${v.soldOut})
-          `
-        );
-      } else {
-        result = await promisePool.query(
-          `
+
+      result = await promisePool.query(
+        `
           insert into collections (title, provider, country, price, variety, processing, description ,direct_url, sold_out)
-          values('${v.title}', '${v.provider}', '${v.country}', ${v.price}, '${v.variety}', '${v.processing}', '${v.description}','${v.directURL}', ${v.soldOut})
-          `
-        );
-      }
+          values('${v.title}','${v.provider}', '${v.country}', ${v.price}, 
+          ${v.variety ? "'" + v.variety + "'" : null}, 
+          '${v.processing ? "'" + v.processing + "'" : null}', 
+          '${v.description ? "'" + v.description + "'" : null}',
+          '${v.directURL}', 
+          ${v.soldOut})
+        `
+      );
+
       return [result[0]];
     } catch (error) {
       console.log(error);

@@ -4,7 +4,7 @@ const path = require("path");
 const parse = require("csv-parse/lib/sync");
 const stringify = require("csv-stringify/lib/sync");
 
-const parseCoffeeList = async () => {
+const parseAlmacieloCoffeeList = async () => {
   try {
     const basePath = path.join(__dirname, "..", "..", "..", "assets", "almacielo");
     fs.readFile(`${basePath}/almacielo_page_location.csv`, (err) => {
@@ -66,5 +66,5 @@ const parseCoffeeList = async () => {
   }
 };
 
-parseCoffeeList();
-module.exports = parseCoffeeList;
+parseAlmacieloCoffeeList();
+module.exports = parseAlmacieloCoffeeList;

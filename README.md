@@ -115,10 +115,6 @@
 
 ### 진행중인 목록
 
-[gsc](https://www.gsc.coffee/)
-
-[almacielo](https://www.almacielo.com/)
-
 [royalcoffee](http://royalcoffeekorea.co.kr/sub/greenbean2.htm?catcode=100000)
 
 [micoffee](https://www.micoffee.co.kr/)
@@ -128,3 +124,7 @@
 [rehmcoffee](http://www.rehmcoffee.co.kr/product/list.html?cate_no=43)
 
 ### 완료된 목록
+
+[gsc](https://www.gsc.coffee/)
+
+[almacielo](https://www.almacielo.com/)

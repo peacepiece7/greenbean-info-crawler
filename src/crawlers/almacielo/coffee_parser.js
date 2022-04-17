@@ -5,7 +5,7 @@ const parse = require("csv-parse/lib/sync");
 const stringify = require("csv-stringify/lib/sync");
 const sql = require("../../sqls/sql");
 
-const parseCoffeeList = async () => {
+const parseAlmacieloCoffeeList = async () => {
   try {
     const basePath = path.join(__dirname, "..", "..", "..", "assets", "almacielo");
     const records = parse(fs.readFileSync(`${basePath}/almacielo_page_location.csv`, "utf-8"));
@@ -27,16 +27,27 @@ const parseCoffeeList = async () => {
       // form : [title, price, counry, provider, variety, process, siteUrl, soldOut]
       const coffeeData = await page.evaluate(
         (directURL) => {
+          let price = 0,
+            country = "",
+            variety = "",
+            processing = "";
+
           const title = document.querySelector(".info h3.name").textContent.trim();
-          const price = document
-            .querySelector(".list tbody tr:first-child td")
-            .textContent.replace(",", "")
-            .replace("원", "");
 
-          const country = document.querySelector(".list tbody tr:nth-child(4) td").textContent.trim();
-
-          const variety = document.querySelector(".list tbody tr:nth-child(5) td").textContent.trim();
-          const processing = document.querySelector(".list tbody tr:nth-child(7) td").textContent.trim();
+          Array.from(document.querySelectorAll(".list tbody tr")).map((tr, i) => {
+            if (tr.querySelector("th") && tr.querySelector("td")) {
+              const headers = tr.querySelector("th").textContent.trim();
+              if (headers === "나의 단가" || headers === "나의단가") {
+                price = tr.querySelector("td").textContent.replace(",", "").replace("원", "");
+              } else if (headers === "국가") {
+                country = tr.querySelector("td").textContent.trim();
+              } else if (headers === "품종") {
+                variety = tr.querySelector("td").textContent.trim();
+              } else if (headers === "가공방식") {
+                processing = tr.querySelector("td").textContent.trim();
+              }
+            }
+          });
 
           const soldOut =
             document.querySelector(".box_btn.huge.buy.orange").textContent.trim() === "바로구매" ? false : true;
@@ -54,6 +65,8 @@ const parseCoffeeList = async () => {
         },
         [record]
       );
+
+      console.log(coffeeData);
       const response = await sql.insertCoffeeData(coffeeData);
       if (response) {
         console.log(`\n\n${response}\n\n`);
@@ -62,13 +75,16 @@ const parseCoffeeList = async () => {
       }
     }
 
+    console.log("\n\n     ╰(*°▽°*)╯ Almacielo coffee list parser done!\n\n");
+
     await page.close();
     await browser.close();
+    process.exit();
   } catch (error) {
     console.log(error);
     process.exit();
   }
 };
 
-parseCoffeeList();
-module.exports = parseCoffeeList;
+parseAlmacieloCoffeeList();
+module.exports = parseAlmacieloCoffeeList;
