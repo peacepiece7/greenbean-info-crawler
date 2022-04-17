@@ -16,11 +16,6 @@ const promisePool = coffeePool.promise();
 
 const sql = {
   insertCoffeeData: async (v) => {
-    // title: title.trim(),
-    // price,
-    // country,
-    // provider: "cabrosia",
-    // directURL,
     try {
       let result;
 
