@@ -33,7 +33,7 @@ const parser = async () => {
         return Array.from(document.querySelectorAll(".item_gallery_type li")).map((li) => {
           const info = li.querySelector(".item_name").textContent;
           let title = info.trim();
-          if (title.includes("]")) title = title.split("]")[1];
+          if (title.includes("]")) title = title.split("]")[1].trim();
           const country = title.split(" ")[0];
           const provider = "micoffee";
           const price = parseInt(li.querySelector(".item_price").textContent.trim().replace(",", "").replace("원", ""));

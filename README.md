@@ -115,11 +115,11 @@
 
 ### 진행중인 목록
 
-[micoffee](https://www.micoffee.co.kr/)
+[rehmcoffee](http://www.rehmcoffee.co.kr/product/list.html?cate_no=43)
+
+### 확인 필요
 
 [gsc](https://www.gsc.coffee/)
-
-[rehmcoffee](http://www.rehmcoffee.co.kr/product/list.html?cate_no=43)
 
 ### 완료된 목록
 
@@ -128,3 +128,5 @@
 [cabrosia](https://cabrosia.com/)
 
 [royalcoffee](http://royalcoffeekorea.co.kr/sub/greenbean2.htm?catcode=100000)
+
+[micoffee](https://www.micoffee.co.kr/)
