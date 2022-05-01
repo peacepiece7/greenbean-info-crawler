@@ -66,7 +66,10 @@ async function parser() {
     let csvFormatData = stringify(newUrlList);
     fs.writeFileSync(`${basePath}/gsc_parse_location.csv`, csvFormatData);
 
-    console.log("\n\n\n url parser is done! \n\n\n");
+    console.log("\n\n\n ╰(*°▽°*)╯ url parser is done! ╰(*°▽°*)╯ \n\n\n");
+    await page.close();
+    await browser.close();
+    process.exit();
   } catch (error) {
     console.log("Error ocurred! plz check the log");
     console.error(error);

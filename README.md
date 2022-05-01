@@ -115,13 +115,13 @@
 
 ### 진행중인 목록
 
-[rehmcoffee](http://www.rehmcoffee.co.kr/product/list.html?cate_no=43)
-
 ### 확인 필요
 
-[gsc](https://www.gsc.coffee/)
-
 ### 완료된 목록
+
+[rehmcoffee](http://www.rehmcoffee.co.kr/product/list.html?cate_no=43)
+
+[gsc](https://www.gsc.coffee/)
 
 [almacielo](https://www.almacielo.com/)
 

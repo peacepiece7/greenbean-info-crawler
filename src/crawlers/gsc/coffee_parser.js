@@ -44,7 +44,7 @@ const gscCralwer = async () => {
           return element.textContent;
         });
 
-        const soldOut = Array.flrom(document.querySelectorAll(".item_gallery_type .grid4 li")).map((v) => {
+        const soldOut = Array.from(document.querySelectorAll(".item_gallery_type .grid4 li")).map((v) => {
           if (v.className.includes("item_soldout")) return true;
           return false;
         });
@@ -59,14 +59,19 @@ const gscCralwer = async () => {
             processing: null,
             description: null,
             directURL: directUrl[i].trim(),
-            soldOut,
+            soldOut: soldOut[i],
           });
         }
         return tagParsingResult;
       });
 
-      console.log(evaluateResult);
+      for (let v of evaluateResult) {
+        const result = await sql.insertCoffeeData(v);
+        console.log(result);
+      }
     }
+
+    console.log("\n\n\n ╰(*°▽°*)╯ gsc coffee parser is done!  ╰(*°▽°*)╯\n\n\n");
 
     await page.close();
     await browser.close();
