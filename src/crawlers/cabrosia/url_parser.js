@@ -40,8 +40,11 @@ const parseCabrosiaURL = async () => {
     console.log("parseResult", parseResult);
     const str = stringify(parseResult);
     fs.writeFileSync(`${basePath}/cabrosia_parse_location.csv`, str);
+
+    process.exit();
   } catch (error) {
     console.log(error);
+    process.exit();
   }
 };
 

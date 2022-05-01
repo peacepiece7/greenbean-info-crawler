@@ -38,7 +38,7 @@ const sql = {
         console.log("INSERT : ", response);
         return "\n\nInsert collection\n\n";
       } else {
-        await promisePool.query(
+        const response = await promisePool.query(
           `
           update collections
           set title = '${v.title}', provider = '${v.provider}', country =  '${v.country}', 

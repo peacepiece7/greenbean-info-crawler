@@ -2,7 +2,6 @@ const puppeteer = require("puppeteer");
 const fs = require("fs");
 const path = require("path");
 const parse = require("csv-parse/lib/sync");
-const stringify = require("csv-stringify/lib/sync");
 const sql = require("../../sqls/sql");
 
 const parseCabrosiaCoffeeList = async () => {
