@@ -24,8 +24,6 @@
 
 [나무사이로](https://namusairo.green/product/list.html?cate_no=24&page=1)
 
-[커피 플랜트](https://www.coffeeplant.co.kr/shop/goods/goods_list.php?&category=020)
-
 [커피 미업](https://coffeemeup.biz/product/list.html?cate_no=50&page=1)
 
 [코빈즈](http://www.cobeans.com/product/list.html?cate_no=23)
@@ -75,12 +73,6 @@
 - 들쭉 날쭉임
 - 추천, 신상품, 목록이 한 화면에 구성되어 있음
 
-[커피 리브레](https://coffeelibre.kr/shop/listtotal.php?ca_id=20)
-
-- 서브 타이이틀을 나라이름으로 분류
-- 영어로 타이틀
-- 단가표 사진
-
 [커피 나루](https://cafe.naver.com/coffeenarucafe?iframe_url_utf8=%2FArticleRead.nhn%3FreferrerAllArticles%3Dfalse%26menuid%3D41%26page%3D1%26boardtype%3DL%26clubid%3D21453686%26articleid%3D63232)
 
 - 영어로 되어 있음
@@ -103,21 +95,25 @@
 
 - 여기 사이트를 못 찾겠음
 
-[세웅gc](http://www.sewoong95.com/shop/list.php?ca_id=10&sort=&sortodr=&page=2)
-
 - 영어, 한글 나라이름 없다있다 영망임
 
 # 2022 04 27
 
 <br>
 
-# 기존 스크립트 리팩토링 작업
+# 기존 스크립트 리팩토링 작업 및 신규 작업
 
 ### 진행중인 목록
+
+[세웅gc](http://www.sewoong95.com/shop/list.php?ca_id=10&sort=&sortodr=&page=2)
+
+[커피 플랜트](https://www.coffeeplant.co.kr/shop/goods/goods_list.php?&category=020)
 
 ### 확인 필요
 
 ### 완료된 목록
+
+[커피 리브레](https://coffeelibre.kr/shop/listtotal.php?ca_id=20)
 
 [rehmcoffee](http://www.rehmcoffee.co.kr/product/list.html?cate_no=43)
 
