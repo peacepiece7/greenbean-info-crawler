@@ -107,7 +107,7 @@
 
 [세웅gc](http://www.sewoong95.com/shop/list.php?ca_id=10&sort=&sortodr=&page=2)
 
-[커피 플랜트](https://www.coffeeplant.co.kr/shop/goods/goods_list.php?&category=020)
+[커피 플랜트](https://www.coffeeplant.co.kr/shop/goods/goods_list.php?&category=021)
 
 ### 확인 필요
 
